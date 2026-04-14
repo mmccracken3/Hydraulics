@@ -1,9 +1,9 @@
 import utils
 
-#TODO:add immutability?
+#TODO:rename file
 
 class Length:
-    _inch_to_ft = 1/12
+    _inch_to_ft = 1 / 12
     _mile_to_ft = 5280
     _m_to_ft = 3.281
 
@@ -25,40 +25,40 @@ class Length:
     def _get(self, factor):
         return self._ft / factor
 
-    def _set(self, value, factor):
-        self._ft = value * factor
+    # def _set(self, value, factor):
+    #     self._ft = value * factor
 
     @property
     def ft(self):
         return self._ft
 
-    @ft.setter
-    def ft(self, value):
-        self._ft = value
+    # @ft.setter
+    # def ft(self, value):
+    #     self._ft = value
 
     @property
     def inch(self):
         return self._get(self._inch_to_ft)
 
-    @inch.setter
-    def inch(self, value):
-        self._set(value, self._inch_to_ft)
+    # @inch.setter
+    # def inch(self, value):
+    #     self._set(value, self._inch_to_ft)
 
     @property
     def mile(self):
         return self._get(self._mile_to_ft)
 
-    @mile.setter
-    def mile(self, value):
-        self._set(value, self._mile_to_ft)
+    # @mile.setter
+    # def mile(self, value):
+    #     self._set(value, self._mile_to_ft)
 
     @property
     def m(self):
         return self._get(self._m_to_ft)
 
-    @m.setter
-    def m(self, value):
-        self._set(value, self._m_to_ft)
+    # @m.setter
+    # def m(self, value):
+    #     self._set(value, self._m_to_ft)
 
     def __add__(self, other):
         if isinstance(other, Length):
@@ -131,13 +131,12 @@ class Length:
         return (f'{self.ft:.5g} ft\n'
                 f'{self.inch:.5g} inch')
 
-#TODO: util are close enough
 
 class Area:
-    _in2_to_sf = 1/144
-    _mile2_to_sf = 5280**2
+    _in2_to_sf = 1 / 144
+    _mile2_to_sf = 27878400
     _ac_to_sf = 43560
-    _m2_to_sf = 3.281**2
+    _m2_to_sf = 3.281 ** 2
 
     def __init__(self, sf=None, in2=None, mile2=None, ac=None, m2=None):
         self._sf = 0.0
@@ -158,48 +157,48 @@ class Area:
     def _get(self, factor):
         return self._sf / factor
 
-    def _set(self, value, factor):
-        self._sf = value * factor
+    # def _set(self, value, factor):
+    #     self._sf = value * factor
 
     @property
     def sf(self):
         return self._sf
 
-    @sf.setter
-    def sf(self, value):
-        self._sf = value
+    # @sf.setter
+    # def sf(self, value):
+    #     self._sf = value
 
     @property
     def inch2(self):
         return self._get(self._in2_to_sf)
 
-    @inch2.setter
-    def inch2(self, value):
-        self._set(value, self._in2_to_sf)
+    # @inch2.setter
+    # def inch2(self, value):
+    #     self._set(value, self._in2_to_sf)
 
     @property
     def mile2(self):
         return self._get(self._mile2_to_sf)
 
-    @mile2.setter
-    def mile2(self, value):
-        self._set(value, self._mile2_to_sf)
+    # @mile2.setter
+    # def mile2(self, value):
+    #     self._set(value, self._mile2_to_sf)
 
     @property
     def ac(self):
         return self._get(self._ac_to_sf)
 
-    @ac.setter
-    def ac(self, value):
-        self._set(value, self._ac_to_sf)
+    # @ac.setter
+    # def ac(self, value):
+    #     self._set(value, self._ac_to_sf)
 
     @property
     def m2(self):
         return self._get(self._m2_to_sf)
 
-    @m2.setter
-    def m2(self, value):
-        self._set(value, self._m2_to_sf)
+    # @m2.setter
+    # def m2(self, value):
+    #     self._set(value, self._m2_to_sf)
 
     def __add__(self, other):
         if isinstance(other, Area):
@@ -277,34 +276,34 @@ class Volume:
             raise ValueError("Volume units cannot be determined.")
 
     def _get(self, factor):
-        return self._cf / factor
+        return self._cf * factor
 
-    def _set(self, value, factor):
-        self._cf = value * factor
+    # def _set(self, value, factor):
+    #     self._cf = value * factor
 
     @property
     def cf(self):
         return self._cf
 
-    @cf.setter
-    def cf(self, value):
-        self._cf = value
+    # @cf.setter
+    # def cf(self, value):
+    #     self._cf = value
 
     @property
     def gal(self):
         return self._get(self._gal_to_cf)
 
-    @gal.setter
-    def gal(self, value):
-        self._set(value, self._gal_to_cf)
+    # @gal.setter
+    # def gal(self, value):
+    #     self._set(value, self._gal_to_cf)
 
     @property
     def m3(self):
         return self._get(self._m3_to_cf)
 
-    @m3.setter
-    def m3(self, value):
-        self._set(value, self._m3_to_cf)
+    # @m3.setter
+    # def m3(self, value):
+    #     self._set(value, self._m3_to_cf)
 
     def __add__(self, other):
         if isinstance(other, Volume):
@@ -360,3 +359,42 @@ class Volume:
     def __str__(self):
         return (f'{self.cf:.5g} cf\n'
                 f'{self.gal:.5g} gal\n')
+
+
+class Time:
+    _min_to_sec = 60
+    _hour_to_sec = 3600
+    _day_to_sec = 86400
+
+    def __init__(self, days=None, hours=None, minutes=None, seconds=None):
+        self._seconds = 0.0
+
+        if days is not None:
+            self._seconds = days * self._day_to_sec
+        elif hours is not None:
+            self._seconds = hours * self._hour_to_sec
+        elif minutes is not None:
+            self._seconds = minutes * self._min_to_sec
+        elif seconds is not None:
+            self._seconds = seconds
+        else:
+            raise TypeError(f'Time units cannot be determined.')
+
+    def _get(self, factor):
+        return self._seconds / factor
+
+    @property
+    def seconds(self):
+        return self._seconds
+
+    @property
+    def minutes(self):
+        return self._get(self._min_to_sec)
+
+    @property
+    def hours(self):
+        return self._get(self._hour_to_sec)
+
+    @property
+    def days(self):
+        return self._get(self._day_to_sec)
