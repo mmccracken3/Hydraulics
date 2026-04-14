@@ -398,3 +398,35 @@ class Time:
     @property
     def days(self):
         return self._get(self._day_to_sec)
+
+    def __add__(self, other):
+        if isinstance(other, Time):
+            return Time(seconds=self.seconds + other.seconds)
+        raise TypeError(f'Time cannot be added by {type(other)}.')
+
+    def __sub__(self, other):
+        if isinstance(other, Time):
+            return Time(seconds=self.seconds - other.seconds)
+        raise TypeError(f'Time cannot be subtracted by {type(other)}.')
+
+#TODO: multiply to get velocity, flow
+
+    def __truediv__(self, other):
+        if isinstance(other, Time):
+            return self.seconds / other.seconds
+        raise TypeError(f'Time cannot be divided by {type(other)}.')
+
+    def __eq__(self, other):
+        if self is other:
+            return True
+
+        if not isinstance(other, Time):
+            return False
+
+        return utils.are_close_enough(self.seconds, other.seconds)
+
+    def __str__(self):
+        return (f'{self.seconds:.5g} seconds\n'
+                f'{self.minutes:.5g} minutes\n'
+                f'{self.hours:.5g} hours\n'
+                f'{self.days:.5g} days\n')
