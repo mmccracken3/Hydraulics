@@ -1,27 +1,151 @@
 import unittest
-from geometry import Length
+from geometry import Length, Area, Volume
+
 
 class TestLength(unittest.TestCase):
-    length = Length(inch=20)
+    length1 = Length(inch=20)
+    length2 = Length(ft=3)
+    length3 = Length(ft=5.5)
 
 
     def test_convert_to_ft(self):
         expected = 20/12
-        actual = self.length.ft
+        actual = self.length1.ft
         self.assertAlmostEqual(expected, actual)
 
     def test_convert_to_m(self):
         expected = 20/12/3.281
-        actual = self.length.m
+        actual = self.length1.m
         self.assertAlmostEqual(expected, actual)
 
     def test_convert_to_mile(self):
         expected = 20/12/5280
-        actual = self.length.mile
+        actual = self.length1.mile
         self.assertAlmostEqual(expected, actual)
 
     def test_convert_to_inch(self):
         expected = 20
-        actual = self.length.inch
+        actual = self.length1.inch
         self.assertAlmostEqual(expected, actual)
 
+    def test_zero(self):
+        expected = 0
+        actual = Length(ft=0).ft
+        self.assertEqual(expected, actual)
+
+    def test_add(self):
+        expected = 20 / 12 + 3
+        actual = self.length1 + self.length2
+        self.assertAlmostEqual(expected, actual.ft)
+
+    def test_sub(self):
+        expected = 3 - 20 / 12
+        actual = self.length2 - self.length1
+        self.assertAlmostEqual(expected, actual.ft)
+
+    def test_mul_length(self):
+        expected = 20 / 12 * 3
+        actual = self.length1 * self.length2
+        self.assertAlmostEqual(expected, actual.sf)
+        self.assertIsInstance(actual, Area)
+
+    def test_mul_area(self):
+        expected = 20 / 12 * 3 * 5.5
+        actual = self.length1 * self.length2 * self.length3
+        self.assertAlmostEqual(expected, actual.cf)
+        self.assertIsInstance(actual, Volume)
+
+    def test_mul_scalar(self):
+        expected = 20 / 12 * 7
+        actual = self.length1 * 7
+        self.assertAlmostEqual(expected, actual.ft)
+        self.assertIsInstance(actual, Length)
+
+    def test_div_length(self):
+        expected = 20 / 12 / 3
+        actual = self.length1 / self.length2
+        self.assertAlmostEqual(expected, actual)
+        self.assertIsInstance(actual, float)
+
+    def test_div_scalar(self):
+        expected = 20 / 12 / 5
+        actual = self.length1 / 5
+        self.assertAlmostEqual(expected, actual.ft)
+
+    def test_pow_2(self):
+        expected = (20 / 12) ** 2
+        actual = self.length1 ** 2
+        self.assertAlmostEqual(expected, actual.sf)
+
+    def test_pow_3(self):
+        expected = (20 / 12) ** 3
+        actual = self.length1 ** 3
+        self.assertAlmostEqual(expected, actual.cf)
+
+    def test_eq(self):
+        self.assertTrue(self.length1 == self.length1)
+        self.assertFalse(self.length1 == Area(sf=1))
+        self.assertTrue(self.length1 == Length(inch=20))
+
+class TestArea(unittest.TestCase):
+    area1 = Area(sf=15)
+    area2 = Area(inch2=1440)
+
+    def test_convert_units(self):
+        expected = 10
+        actual = self.area2.sf
+        self.assertAlmostEqual(expected, actual)
+        self.assertAlmostEqual(2160, self.area1.inch2)
+        self.assertAlmostEqual(15 / 5280 / 5280, self.area1.mile2)
+        self.assertAlmostEqual(15 / 3.281 / 3.281, self.area1.m2)
+
+    def test_add(self):
+        expected = 25
+        actual = self.area1 + self.area2
+        self.assertAlmostEqual(expected, actual.sf)
+
+    def test_sub(self):
+        expected = 5
+        actual = self.area1 - self.area2
+        self.assertAlmostEqual(expected, actual.sf)
+
+    def test_mul_length(self):
+        expected = 30
+        actual = self.area1 * Length(ft=2)
+        self.assertAlmostEqual(expected, actual.cf)
+
+    def test_mul_scalar(self):
+        expected = 45
+        actual = self.area1 * 3
+        self.assertAlmostEqual(expected, actual.sf)
+
+    def test_div_length(self):
+        expected = 5
+        actual = self.area1 / Length(ft=3)
+        self.assertAlmostEqual(expected, actual.ft)
+
+    def test_div_area(self):
+        expected = 1.5
+        actual = self.area1 / self.area2
+        self.assertAlmostEqual(expected, actual)
+
+    def test_div_scalar(self):
+        expected = 3
+        actual = self.area1 / 5
+        self.assertAlmostEqual(expected, actual.sf)
+
+    def test_eq(self):
+        self.assertTrue(self.area1 == self.area1)
+        self.assertFalse(self.area1 == Length(ft=15))
+        self.assertTrue(self.area1 == Area(sf=15))
+
+class TestVolume(unittest.TestCase):
+    vol1 = Volume(cf=100)
+    vol2 = Volume(gal=374.026)
+
+    def test_convert_units(self):
+        self.assertAlmostEqual(50, self.vol2.cf)
+        self.assertAlmostEqual(748.052, self.vol1.gal)
+        self.assertAlmostEqual(100 / 3.281 / 3.281 / 3.281, self.vol1.m3)
+
+#TODO: magic methods

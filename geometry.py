@@ -1,6 +1,5 @@
 import utils
 
-#TODO:rename file
 
 class Length:
     _inch_to_ft = 1 / 12
@@ -82,15 +81,15 @@ class Length:
         else:
             raise TypeError(f'Length cannot be multiplied by {type(other)}.')
 
-    def __rmul__(self, other):
-        if isinstance(other, Length):
-            return Length(ft=self.ft * other.ft)
-        elif isinstance(other, Area):
-            return Volume(other.sf * self.ft)
-        elif isinstance(other, int) or isinstance(other, float):
-            return Length(ft=self.ft * other)
-        else:
-            raise TypeError(f'Length cannot be multiplied by {type(other)}.')
+    # def __rmul__(self, other):
+    #     if isinstance(other, Length):
+    #         return Length(ft=self.ft * other.ft)
+    #     elif isinstance(other, Area):
+    #         return Volume(other.sf * self.ft)
+    #     elif isinstance(other, int) or isinstance(other, float):
+    #         return Length(ft=self.ft * other)
+    #     else:
+    #         raise TypeError(f'Length cannot be multiplied by {type(other)}.')
 
     def __truediv__(self, other):
         if isinstance(other, Length):
@@ -100,15 +99,15 @@ class Length:
         else:
             raise TypeError(f'Length cannot be divided by {type(other)}.')
 
-    def __rtruediv__(self, other):
-        if isinstance(other, Length):
-            return float(self.ft) / float(other.ft)
-        elif isinstance(other, Area):
-            return Length(ft=other.sf / self.ft)
-        elif isinstance(other, Volume):
-            return Area(sf=other.cf / self.ft)
-        else:
-            raise TypeError(f'{type(other)} cannot be divided by Length.')
+    # def __rtruediv__(self, other):
+    #     if isinstance(other, Length):
+    #         return float(self.ft) / float(other.ft)
+    #     elif isinstance(other, Area):
+    #         return Length(ft=other.sf / self.ft)
+    #     elif isinstance(other, Volume):
+    #         return Area(sf=other.cf / self.ft)
+    #     else:
+    #         raise TypeError(f'{type(other)} cannot be divided by Length.')
 
     def __pow__(self, other):
         if other == 2:
@@ -138,11 +137,11 @@ class Area:
     _ac_to_sf = 43560
     _m2_to_sf = 3.281 ** 2
 
-    def __init__(self, sf=None, in2=None, mile2=None, ac=None, m2=None):
+    def __init__(self, sf=None, inch2=None, mile2=None, ac=None, m2=None):
         self._sf = 0.0
 
-        if in2 is not None:
-            self._sf = in2 * self._in2_to_sf
+        if inch2 is not None:
+            self._sf = inch2 * self._in2_to_sf
         elif mile2 is not None:
             self._sf = mile2 * self._mile2_to_sf
         elif ac is not None:
@@ -220,13 +219,13 @@ class Area:
         else:
             raise TypeError(f'Area cannot be multiplied by {type(other)}.')
 
-    def __rmul__(self, other):
-        if isinstance(other, Length):
-            return Volume(cf=self.sf * other.ft)
-        elif isinstance(other, int) or isinstance(other, float):
-            return Area(sf=self.sf * other)
-        else:
-            raise TypeError(f'Area cannot be multiplied by {type(other)}.')
+    # def __rmul__(self, other):
+    #     if isinstance(other, Length):
+    #         return Volume(cf=self.sf * other.ft)
+    #     elif isinstance(other, int) or isinstance(other, float):
+    #         return Area(sf=self.sf * other)
+    #     else:
+    #         raise TypeError(f'Area cannot be multiplied by {type(other)}.')
 
     def __truediv__(self, other):
         if isinstance(other, Length):
@@ -238,13 +237,13 @@ class Area:
         else:
             raise TypeError(f'Area cannot be divided by {type(other)}.')
 
-    def __rtruediv__(self, other):
-        if isinstance(other, Volume):
-            return Length(ft=other.cf / self.sf)
-        elif isinstance(other, Area):
-            return other.sf / self.sf
-        else:
-            raise TypeError(f'{type(other)} cannot be divided by area.')
+    # def __rtruediv__(self, other):
+    #     if isinstance(other, Volume):
+    #         return Length(ft=other.cf / self.sf)
+    #     elif isinstance(other, Area):
+    #         return other.sf / self.sf
+    #     else:
+    #         raise TypeError(f'{type(other)} cannot be divided by area.')
 
     def __eq__(self, other):
         if self is other:
@@ -260,7 +259,7 @@ class Area:
                 f'{self.inch2:.5g} inch2\n')
 
 class Volume:
-    _gal_to_cf = 7.48052
+    _gal_to_cf = 1 / 7.48052
     _m3_to_cf = 3.281 ** 3
 
     def __init__(self, cf=None, gal=None, m3=None):
