@@ -413,6 +413,8 @@ class Time:
     def __truediv__(self, other):
         if isinstance(other, Time):
             return self.seconds / other.seconds
+        elif isinstance(other, int) or isinstance(other, float):
+            return Time(seconds=self.seconds / other)
         raise TypeError(f'Time cannot be divided by {type(other)}.')
 
     def __eq__(self, other):

@@ -200,5 +200,27 @@ class TestTime(unittest.TestCase):
         self.assertAlmostEqual(300 / 60 / 60, self.time1.hours)
         self.assertAlmostEqual(300 / 60 / 60 / 24, self.time1.days)
 
+    def test_add(self):
+        expected = 480
+        actual = self.time1 + self.time2
+        self.assertEqual(expected, actual.seconds)
 
-    #TODO: time
+    def test_sub(self):
+        expected = 120
+        actual = self.time1 - self.time2
+        self.assertEqual(expected, actual.seconds)
+
+    def test_div_time(self):
+        expected = 300/180
+        actual = self.time1 / self.time2
+        self.assertEqual(expected, actual)
+
+    def test_div_scalar(self):
+        expected = 100
+        actual = self.time1 / 3
+        self.assertAlmostEqual(expected, actual.seconds)
+
+    def test_eq(self):
+        self.assertTrue(self.time1 == self.time1)
+        self.assertFalse(self.time1 == Length(ft=20))
+        self.assertTrue(self.time1 == Time(minutes=5))
