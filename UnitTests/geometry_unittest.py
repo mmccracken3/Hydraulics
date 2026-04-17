@@ -1,5 +1,5 @@
 import unittest
-from geometry import Length, Area, Volume
+from geometry import Length, Area, Volume, Time
 
 
 class TestLength(unittest.TestCase):
@@ -191,4 +191,14 @@ class TestVolume(unittest.TestCase):
         self.assertTrue(self.vol1 == Volume(cf=100))
 
 class TestTime(unittest.TestCase):
+    time1 = Time(seconds=300)
+    time2 = Time(minutes=3)
+
+    def test_convert_units(self):
+        self.assertAlmostEqual(180, self.time2.seconds)
+        self.assertAlmostEqual(5, self.time1.minutes)
+        self.assertAlmostEqual(300 / 60 / 60, self.time1.hours)
+        self.assertAlmostEqual(300 / 60 / 60 / 24, self.time1.days)
+
+
     #TODO: time
