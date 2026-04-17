@@ -275,7 +275,7 @@ class Volume:
             raise ValueError("Volume units cannot be determined.")
 
     def _get(self, factor):
-        return self._cf * factor
+        return self._cf / factor
 
     # def _set(self, value, factor):
     #     self._cf = value * factor
@@ -322,11 +322,11 @@ class Volume:
 
         raise TypeError(f'Volume cannot be multiplied by {type(other)}.')
 
-    def __rmul__(self, other):
-        if isinstance(other, int) or isinstance(other, float):
-            return Volume(cf=self.cf * other)
-
-        raise TypeError(f'Volume cannot be multiplied by {type(other)}.')
+    # def __rmul__(self, other):
+    #     if isinstance(other, int) or isinstance(other, float):
+    #         return Volume(cf=self.cf * other)
+    #
+    #     raise TypeError(f'Volume cannot be multiplied by {type(other)}.')
 
     def __truediv__(self, other):
         if isinstance(other, Volume):
@@ -340,11 +340,11 @@ class Volume:
         else:
             raise TypeError(f'Volume cannot be divided by {type(other)}.')
 
-    def __rtruediv__(self, other):
-        if isinstance(other, Volume):
-            return other.cf / self.cf
-
-        raise TypeError(f'{type(other)} cannot be divided by Volume.')
+    # def __rtruediv__(self, other):
+    #     if isinstance(other, Volume):
+    #         return other.cf / self.cf
+    #
+    #     raise TypeError(f'{type(other)} cannot be divided by Volume.')
 
     def __eq__(self, other):
         if self is other:
@@ -408,7 +408,7 @@ class Time:
             return Time(seconds=self.seconds - other.seconds)
         raise TypeError(f'Time cannot be subtracted by {type(other)}.')
 
-#TODO: multiply to get velocity, flow
+#TODO: multiply to get velocity, flow?
 
     def __truediv__(self, other):
         if isinstance(other, Time):

@@ -142,10 +142,53 @@ class TestArea(unittest.TestCase):
 class TestVolume(unittest.TestCase):
     vol1 = Volume(cf=100)
     vol2 = Volume(gal=374.026)
+    area = Area(sf=10)
+    length = Length(ft=20)
 
     def test_convert_units(self):
         self.assertAlmostEqual(50, self.vol2.cf)
         self.assertAlmostEqual(748.052, self.vol1.gal)
         self.assertAlmostEqual(100 / 3.281 / 3.281 / 3.281, self.vol1.m3)
 
-#TODO: magic methods
+    def test_add(self):
+        expected = 150
+        actual = self.vol1 + self.vol2
+        self.assertAlmostEqual(expected, actual.cf)
+
+    def test_sub(self):
+        expected = 50
+        actual = self.vol1 - self.vol2
+        self.assertAlmostEqual(expected, actual.cf)
+
+    def test_mul_scalar(self):
+        expected = 200
+        actual = self.vol1 * 2
+        self.assertAlmostEqual(expected, actual.cf)
+
+    def test_div_volume(self):
+        expected = 2
+        actual = self.vol1 / self.vol2
+        self.assertAlmostEqual(expected, actual)
+
+    def test_div_area(self):
+        expected = Length(ft=10)
+        actual = self.vol1 / self.area
+        self.assertAlmostEqual(expected, actual)
+
+    def test_div_length(self):
+        expected = Area(sf=5)
+        actual = self.vol1 / self.length
+        self.assertAlmostEqual(expected, actual)
+
+    def test_div_scalar(self):
+        expected = Volume(cf=25)
+        actual = self.vol1 / 4
+        self.assertAlmostEqual(expected, actual)
+
+    def test_eq(self):
+        self.assertTrue(self.vol1 == self.vol1)
+        self.assertFalse(self.vol1 == Length(ft=20))
+        self.assertTrue(self.vol1 == Volume(cf=100))
+
+class TestTime(unittest.TestCase):
+    #TODO: time
