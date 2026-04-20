@@ -1,5 +1,5 @@
 import unittest
-from geometry import Length, Area, Volume, Time
+from fundamentals import Length, Area, Volume, Time, Velocity, Flow
 
 
 class TestLength(unittest.TestCase):
@@ -71,6 +71,11 @@ class TestLength(unittest.TestCase):
         expected = 20 / 12 / 5
         actual = self.length1 / 5
         self.assertAlmostEqual(expected, actual.ft)
+
+    def test_div_velocity(self):
+        expected = Time(seconds=1)
+        actual = self.length2 / Velocity(fps=3)
+        self.assertEqual(expected, actual)
 
     def test_pow_2(self):
         expected = (20 / 12) ** 2
@@ -185,6 +190,11 @@ class TestVolume(unittest.TestCase):
         actual = self.vol1 / 4
         self.assertAlmostEqual(expected, actual)
 
+    def test_div_flow(self):
+        expected = Time(seconds=10)
+        actual = self.vol1 / Flow(cfs=10)
+        self.assertEqual(expected, actual)
+
     def test_eq(self):
         self.assertTrue(self.vol1 == self.vol1)
         self.assertFalse(self.vol1 == Length(ft=20))
@@ -224,3 +234,39 @@ class TestTime(unittest.TestCase):
         self.assertTrue(self.time1 == self.time1)
         self.assertFalse(self.time1 == Length(ft=20))
         self.assertTrue(self.time1 == Time(minutes=5))
+#TODO: check div for velocity
+class TestVelocity(unittest.TestCase):
+    velocity1 = Velocity(fps=30)
+    velocity2 = Velocity(mps=10 / 3.281)
+
+
+    def test_convert(self):
+        self.assertEqual(30 / 3.281, self.velocity1.mps)
+        self.assertEqual(10, self.velocity2.fps)
+
+    def test_add(self):
+        expected = 40
+        actual = self.velocity1 + self.velocity2
+        self.assertEqual(expected, actual.fps)
+
+    def test_sub(self):
+        expected = 20
+        actual = self.velocity1 - self.velocity2
+        self.assertEqual(expected, actual.fps)
+
+    def test_mul_time(self):
+        expected = 300
+        actual = self.velocity1 * Time(seconds=10)
+        self.assertEqual(expected, actual.ft)
+
+    def test_div_velocity(self):
+        expected = 3
+        actual = self.velocity1 / self.velocity2
+        self.assertEqual(expected, actual)
+
+    def test_rdiv_length(self):
+        expected = 10
+        actual = Length(ft=300) / self.velocity1
+        self.assertEqual(expected, actual.seconds)
+
+#TODO: flow tests
