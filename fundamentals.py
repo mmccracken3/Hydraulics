@@ -4,7 +4,7 @@ import utils
 class Length:
     _inch_to_ft = 1 / 12
     _mile_to_ft = 5280
-    _m_to_ft = 3.281
+    _m_to_ft = 3.280839895
 
 
     def __init__(self, ft=None, inch=None, mile=None, m=None):
@@ -19,7 +19,7 @@ class Length:
         elif ft is not None:
             self._ft = ft
         else:
-            raise ValueError("Length units cannot be determined.")
+            raise TypeError("Length units cannot be determined.")
 
     def _get(self, factor):
         return self._ft / factor
@@ -63,7 +63,7 @@ class Length:
         if isinstance(other, Length):
             return Length(ft=self.ft + other.ft)
 
-        raise ValueError(f'Length cannot be added by {type(other)}.')
+        raise TypeError(f'Length cannot be added by {type(other)}.')
 
     def __sub__(self, other):
         if isinstance(other, Length):
@@ -135,9 +135,9 @@ class Length:
 
 class Area:
     _in2_to_sf = 1 / 144
-    _mile2_to_sf = 27878400
+    _mile2_to_sf = 5208 ** 2
     _ac_to_sf = 43560
-    _m2_to_sf = 3.281 ** 2
+    _m2_to_sf = 3.280839895 ** 2
 
     def __init__(self, sf=None, inch2=None, mile2=None, ac=None, m2=None):
         self._sf = 0.0
@@ -153,7 +153,7 @@ class Area:
         elif m2 is not None:
             self._sf = m2 * self._m2_to_sf
         else:
-            raise ValueError("Area units cannot be determined.")
+            raise TypeError("Area units cannot be determined.")
 
     def _get(self, factor):
         return self._sf / factor
@@ -203,15 +203,15 @@ class Area:
 
     def __add__(self, other):
         if isinstance(other, Area):
-            return Area(self._sf + other._sf)
+            return Area(self.sf + other.sf)
 
-        raise ValueError(f'Area cannot be added by {type(other)}.')
+        raise TypeError(f'Area cannot be added by {type(other)}.')
 
     def __sub__(self, other):
         if isinstance(other, Area):
-            return Area(self._sf - other._sf)
+            return Area(self.sf - other.sf)
 
-        raise ValueError(f'Area cannot be subtracted by {type(other)}.')
+        raise TypeError(f'Area cannot be subtracted by {type(other)}.')
 
     def __mul__(self, other):
         if isinstance(other, Length):
@@ -261,8 +261,8 @@ class Area:
                 f'{self.inch2:.5g} inch2\n')
 
 class Volume:
-    _gal_to_cf = 1 / 7.48052
-    _m3_to_cf = 3.281 ** 3
+    _gal_to_cf = 1 / 7.48051948
+    _m3_to_cf = 3.280839895 ** 3
 
     def __init__(self, cf=None, gal=None, m3=None):
         self._cf = 0.0
@@ -437,7 +437,7 @@ class Time:
                 f'{self.days:.5g} days\n')
 
 class Velocity:
-    _mps_to_fps = 3.281
+    _mps_to_fps = 3.280839895
 
     def __init__(self, fps=None, mps=None):
         self._fps = 0.0
@@ -462,12 +462,12 @@ class Velocity:
 
     def __add__(self, other):
         if isinstance(other, Velocity):
-            return Velocity(self._fps + other._fps)
+            return Velocity(self.fps + other.fps)
         raise TypeError(f"Cannot add Velocity to {type(other)}")
 
     def __sub__(self, other):
         if isinstance(other, Velocity):
-            return Velocity(self._fps - other._fps)
+            return Velocity(self.fps - other.fps)
         raise TypeError(f"Cannot subtract Velocity by {type(other)}")
 
     def __mul__(self, other):
@@ -490,18 +490,18 @@ class Velocity:
             return True
         if not isinstance(other, Velocity):
             return False
-        return utils.are_close_enough(self, other)
+        return utils.are_close_enough(self.fps, other.fps)
 
     def __str__(self):
         return f'{self.fps} fps'
 
 
 class Flow:
-    _gps_to_cfs = 7.48052
+    _gps_to_cfs = 7.48051948
     _gpm_to_cfs = _gps_to_cfs * 60
     _gpd_to_cfs = _gpm_to_cfs * 60 * 24
     _mgd_to_cfs = _gpd_to_cfs / 1e6
-    _cms_to_cfs = 1 / (3.281) ** 3
+    _cms_to_cfs = 1 / 3.280839895 ** 3
 
     def __init__(self, mgd=None, gpd=None, gpm=None, gps=None, cfs=None, cms=None):
         self._cfs = 0.0
@@ -550,12 +550,12 @@ class Flow:
 
     def __add__(self, other):
         if isinstance(other, Flow):
-            return Flow(self._cfs + other._cfs)
+            return Flow(self.cfs + other.cfs)
         raise TypeError(f"Cannot add Flow to {type(other)}")
 
     def __sub__(self, other):
         if isinstance(other, Flow):
-            return Flow(self._cfs - other._cfs)
+            return Flow(self.cfs - other.cfs)
         raise TypeError(f"Cannot subtract Flow from {type(other)}")
 
     def __mul__(self, other):
